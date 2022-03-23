@@ -1,0 +1,187 @@
+<!doctype html><html lang=zh><head><meta name=generator content="Hugo 0.79.1"><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=description content="性能测试 #  推荐使用 Elasticsearch 专属压测工具 Loadgen 来对网关进行性能压测。
+Loadgen 的特点：
+ 性能强劲 轻量级无依赖 支持模板化参数随机 支持高并发 支持压测端均衡流量控制   下载地址： http://release.infinilabs.com/loadgen/
+ Loadgen #  Loadgen 使用非常简单，下载解压之后会得到两个文件，一个可执行程序和一个配置文件 loadgen.yml，配置文件样例如下：
+variables: - name: ip type: file path: test/ip.txt - name: user type: file path: test/user.txt - name: id type: sequence - name: uuid type: uuid - name: now_local type: now_local - name: now_utc type: now_utc - name: now_unix type: now_unix requests: - request: has_variable: true method: GET basic_auth: username: elastic password: pass url: http://localhost:8000/medcl/_search body: '{ &#34;query&#34;: {&#34;match&#34;: { &#34;name&#34;: &#34;$[[user]]&#34; }}}' 变量的使用 #  上面的配置中，variables 用来定义变量参数，根据 name 来设置变量标识，在构造请求的使用 $[[变量名]] 即可访问该变量的值，变量目前支持的类型有："><meta name=theme-color content="#FFFFFF"><meta property="og:title" content="性能测试"><meta property="og:description" content="性能测试 #  推荐使用 Elasticsearch 专属压测工具 Loadgen 来对网关进行性能压测。
+Loadgen 的特点：
+ 性能强劲 轻量级无依赖 支持模板化参数随机 支持高并发 支持压测端均衡流量控制   下载地址： http://release.infinilabs.com/loadgen/
+ Loadgen #  Loadgen 使用非常简单，下载解压之后会得到两个文件，一个可执行程序和一个配置文件 loadgen.yml，配置文件样例如下：
+variables: - name: ip type: file path: test/ip.txt - name: user type: file path: test/user.txt - name: id type: sequence - name: uuid type: uuid - name: now_local type: now_local - name: now_utc type: now_utc - name: now_unix type: now_unix requests: - request: has_variable: true method: GET basic_auth: username: elastic password: pass url: http://localhost:8000/medcl/_search body: '{ &#34;query&#34;: {&#34;match&#34;: { &#34;name&#34;: &#34;$[[user]]&#34; }}}' 变量的使用 #  上面的配置中，variables 用来定义变量参数，根据 name 来设置变量标识，在构造请求的使用 $[[变量名]] 即可访问该变量的值，变量目前支持的类型有："><meta property="og:type" content="article"><meta property="og:url" content="/zh/docs/getting-started/benchmark/"><title>性能测试 | INFINI Gateway</title><link rel=manifest href=/manifest.json><link rel=icon href=/favicon.png type=image/x-icon><link rel=alternate hreflang=en href=/docs/getting-started/benchmark/ title="Performance Test"><link rel=stylesheet href=/book.min.86778a3f4df1b5b61556a975dd0ee3bd2c03aeee5a2e203fb93ecbd71224869e.css integrity="sha256-hneKP03xtbYVVql13Q7jvSwDru5aLiA/uT7L1xIkhp4="><script defer src=/zh.search.min.3f48888376367170dbb98f8519f6ca578c21e88d535853a320baa66041c766b6.js integrity="sha256-P0iIg3Y2cXDbuY+FGfbKV4wh6I1TWFOjILqmYEHHZrY="></script><script defer src=/js/jquery-2.x.min.js></script><script defer src=/js/doc.js></script></head><body><input type=checkbox class="hidden toggle" id=menu-control>
+<input type=checkbox class="hidden toggle" id=toc-control><main class="container flex"><aside class=book-menu><nav><h2 class=book-brand><a href=/zh><img src=/img/logo-zh.svg alt=Logo></a></h2><div class=book-search><input type=text id=book-search-input placeholder=搜索 aria-label=搜索 maxlength=64 data-hotkeys=s/><div class="book-search-spinner hidden"></div><ul id=book-search-results></ul></div><ul><li><a href=/zh/docs/overview/>产品概述</a><ul></ul></li><li><input type=checkbox id=section-f1b7c1b2e5dd43526e77637c475d35b8 class=toggle checked>
+<label for=section-f1b7c1b2e5dd43526e77637c475d35b8 class="flex justify-between"><a>入门指南</a>
+<span>▾</span></label><ul><li><a href=/zh/docs/getting-started/install/>安装网关</a></li><li><a href=/zh/docs/getting-started/configuration/>配置网关</a></li><li><a href=/zh/docs/getting-started/docker/>容器部署</a></li><li><a href=/zh/docs/getting-started/optimization/>系统调优</a></li><li><a href=/zh/docs/getting-started/benchmark/ class=active>性能测试</a></li></ul></li><li><input type=checkbox id=section-fb088f8a9be33f7f260ad2b140bb7bdc class=toggle>
+<label for=section-fb088f8a9be33f7f260ad2b140bb7bdc class="flex justify-between"><a>功能手册</a>
+<span>▾</span></label><ul><li><a href=/zh/docs/references/entry/>服务入口</a></li><li><a href=/zh/docs/references/router/>服务路由</a></li><li><a href=/zh/docs/references/flow/>处理流程</a></li><li><a href=/zh/docs/references/elasticsearch/>Elasticsearch</a></li><li><a href=/zh/docs/references/context/>请求上下文</a></li><li><input type=checkbox id=section-a53d1bd91095fa28aef70cee327a5121 class=toggle>
+<label for=section-a53d1bd91095fa28aef70cee327a5121 class="flex justify-between"><a href=/zh/docs/references/filters/>在线过滤器</a>
+<span>▾</span></label><ul><li><a href=/zh/docs/references/filters/echo/>echo</a></li><li><a href=/zh/docs/references/filters/basic_auth/>basic_auth</a></li><li><a href=/zh/docs/references/filters/bulk_request_mutate/>bulk_request_mutate</a></li><li><a href=/zh/docs/references/filters/bulk_reshuffle/>bulk_reshuffle</a></li><li><a href=/zh/docs/references/filters/bulk_response_process/>bulk_response_process</a></li><li><a href=/zh/docs/references/filters/cache/>cache</a></li><li><a href=/zh/docs/references/filters/clone/>clone</a></li><li><a href=/zh/docs/references/filters/context_filter/>context_filter</a></li><li><a href=/zh/docs/references/filters/context_limiter/>context_limiter</a></li><li><a href=/zh/docs/references/filters/context_regex_replace/>context_regex_replace</a></li><li><a href=/zh/docs/references/filters/date_range_precision_tuning/>date_range_precision_tuning</a></li><li><a href=/zh/docs/references/filters/drop/>drop</a></li><li><a href=/zh/docs/references/filters/dump/>dump</a></li><li><a href=/zh/docs/references/filters/elasticsearch/>elasticsearch</a></li><li><a href=/zh/docs/references/filters/elasticsearch_health_check/>elasticsearch_health_check</a></li><li><a href=/zh/docs/references/filters/flow/>flow</a></li><li><a href=/zh/docs/references/filters/http/>http</a></li><li><a href=/zh/docs/references/filters/ldap_auth/>ldap_auth</a></li><li><a href=/zh/docs/references/filters/logging/>logging</a></li><li><a href=/zh/docs/references/filters/queue/>queue</a></li><li><a href=/zh/docs/references/filters/ratio/>ratio</a></li><li><a href=/zh/docs/references/filters/record/>record</a></li><li><a href=/zh/docs/references/filters/redis_pubsub/>redis_pubsub</a></li><li><a href=/zh/docs/references/filters/request_api_key_filter/>request_api_key_filter</a></li><li><a href=/zh/docs/references/filters/request_api_key_limiter/>request_api_key_limiter</a></li><li><a href=/zh/docs/references/filters/request_body_json_del/>request_body_json_del</a></li><li><a href=/zh/docs/references/filters/request_body_json_set/>request_body_json_set</a></li><li><a href=/zh/docs/references/filters/request_body_regex_replace/>request_body_regex_replace</a></li><li><a href=/zh/docs/references/filters/request_client_ip_filter/>request_client_ip_filter</a></li><li><a href=/zh/docs/references/filters/request_client_ip_limiter/>request_client_ip_limiter</a></li><li><a href=/zh/docs/references/filters/request_header_filter/>request_header_filter</a></li><li><a href=/zh/docs/references/filters/request_host_filter/>request_host_filter</a></li><li><a href=/zh/docs/references/filters/request_host_limiter/>request_host_limiter</a></li><li><a href=/zh/docs/references/filters/request_method_filter/>request_method_filter</a></li><li><a href=/zh/docs/references/filters/request_path_filter/>request_path_filter</a></li><li><a href=/zh/docs/references/filters/request_path_limiter/>request_path_limiter</a></li><li><a href=/zh/docs/references/filters/request_user_filter/>request_user_filter</a></li><li><a href=/zh/docs/references/filters/request_user_limiter/>request_user_limiter</a></li><li><a href=/zh/docs/references/filters/response_body_regex_replace/>response_body_regex_replace</a></li><li><a href=/zh/docs/references/filters/response_header_filter/>response_header_filter</a></li><li><a href=/zh/docs/references/filters/response_header_format/>response_header_format</a></li><li><a href=/zh/docs/references/filters/response_status_filter/>response_status_filter</a></li><li><a href=/zh/docs/references/filters/retry_limiter/>retry_limiter</a></li><li><a href=/zh/docs/references/filters/sample/>sample</a></li><li><a href=/zh/docs/references/filters/set_basic_auth/>set_basic_auth</a></li><li><a href=/zh/docs/references/filters/set_context/>set_context</a></li><li><a href=/zh/docs/references/filters/set_hostname/>set_hostname</a></li><li><a href=/zh/docs/references/filters/set_request_header/>set_request_header</a></li><li><a href=/zh/docs/references/filters/set_request_query_args/>set_request_query_args</a></li><li><a href=/zh/docs/references/filters/set_response/>set_response</a></li><li><a href=/zh/docs/references/filters/set_response_header/>set_response_header</a></li><li><a href=/zh/docs/references/filters/sleep/>sleep</a></li><li><a href=/zh/docs/references/filters/switch/>switch</a></li><li><a href=/zh/docs/references/filters/translog/>translog</a></li></ul></li><li><input type=checkbox id=section-82db29a871579194764c352cfff582f2 class=toggle>
+<label for=section-82db29a871579194764c352cfff582f2 class="flex justify-between"><a href=/zh/docs/references/processors/>离线处理器</a>
+<span>▾</span></label><ul><li><a href=/zh/docs/references/processors/bulk_indexing/>bulk_indexing</a></li><li><a href=/zh/docs/references/processors/dag/>dag</a></li><li><a href=/zh/docs/references/processors/dump_hash/>dump_hash</a></li><li><a href=/zh/docs/references/processors/flow_runner/>flow_runner</a></li><li><a href=/zh/docs/references/processors/index_diff/>index_diff</a></li><li><a href=/zh/docs/references/processors/json_indexing/>json_indexing</a></li><li><a href=/zh/docs/references/processors/queue_consumer/>queue_consumer</a></li><li><a href=/zh/docs/references/processors/replay/>replay</a></li></ul></li><li><input type=checkbox id=section-3de6688eceb9f20db2f0270adccf76e2 class=toggle>
+<label for=section-3de6688eceb9f20db2f0270adccf76e2 class="flex justify-between"><a>功能组件</a>
+<span>▾</span></label><ul><li><a href=/zh/docs/references/modules/floating_ip/>浮动 IP</a></li><li><a href=/zh/docs/references/modules/force_merge/>索引段合并</a></li></ul></li><li><a href=/zh/docs/references/config/>其它配置</a></li></ul></li><li><input type=checkbox id=section-75a1b849ec817b105e0397971f02e977 class=toggle>
+<label for=section-75a1b849ec817b105e0397971f02e977 class="flex justify-between"><a>开发手册</a>
+<span>▾</span></label><ul><li><input type=checkbox id=section-67ac850f314cddf19527a42089315d2f class=toggle>
+<label for=section-67ac850f314cddf19527a42089315d2f class="flex justify-between"><a>API 手册</a>
+<span>▾</span></label><ul></ul></li><li><input type=checkbox id=section-8c2a68d691ef9d9cc23e692c13acbab6 class=toggle>
+<label for=section-8c2a68d691ef9d9cc23e692c13acbab6 class="flex justify-between"><a>插件开发</a>
+<span>▾</span></label><ul></ul></li></ul></li><li><input type=checkbox id=section-391bcaab6cc03bd87e3373752bfd390e class=toggle>
+<label for=section-391bcaab6cc03bd87e3373752bfd390e class="flex justify-between"><a>动手教程</a>
+<span>▾</span></label><ul><li><a href=/zh/docs/tutorial/log4j2_filtering/>Apache Log4j 漏洞处置</a></li><li><a href=/zh/docs/tutorial/online_query_rewrite/>在线查询修复的实现</a></li><li><a href=/zh/docs/tutorial/request-logging/>查询请求流量日志分析</a></li><li><a href=/zh/docs/tutorial/index_diff/>索引文档级别差异对比</a></li><li><a href=/zh/docs/tutorial/es-hadoop_integration/>与 Elasticsearch-Hadoop 集成</a></li><li><a href=/zh/docs/tutorial/proxy_kibana/>为 Kibana 添加代理和基础安全</a></li><li><a href=/zh/docs/tutorial/fix_count_in_search_response/>兼容不同版本的响应 Count 结构</a></li></ul></li><li><input type=checkbox id=section-7e4e95606453deb85437b78d9c3f2d72 class=toggle>
+<label for=section-7e4e95606453deb85437b78d9c3f2d72 class="flex justify-between"><a href=/zh/docs/user-cases/>用户案例</a>
+<span>▾</span></label><ul><li><a href=/zh/docs/user-cases/stories/a_cross_region_cluster_access_locality/>作业帮跨云集群的就近本地访问</a></li><li><a href=/zh/docs/user-cases/stories/indexing_speedup_for_big_index_rebuild/>某保险业务索引速度百倍提升</a></li></ul></li><li><a href=/zh/docs/troubleshooting/>常见问题</a><ul></ul></li><li><a href=/zh/docs/release-notes/>版本历史</a><ul></ul></li><li><a href=/zh/docs/resources/>其它资源</a><ul></ul></li></ul><div class=heading><select class=version-selector>
+<option value>master (latest)</option>
+<option value=v1.5.0>v1.5.x</option>
+<option value=v1.4.0>v1.4.x</option>
+<option value=v1.3.0>v1.3.x</option></select></div><ul><a class=download-btn href=https://release.infinilabs.com/>Download</a></ul></nav><script>(function(){var menu=document.querySelector("aside.book-menu nav");addEventListener("beforeunload",function(event){localStorage.setItem("menu.scrollTop",menu.scrollTop);});menu.scrollTop=localStorage.getItem("menu.scrollTop");})();</script></aside><div class=book-page><header class=book-header><div class="flex align-center justify-between"><label for=menu-control><img src=/svg/menu.svg class=book-icon alt=Menu></label>
+<strong>性能测试</strong>
+<label for=toc-control><img src=/svg/toc.svg class=book-icon alt="Table of Contents"></label></div><aside class="hidden clearfix"><nav id=TableOfContents><ul><li><a href=#性能测试>性能测试</a><ul><li><a href=#loadgen>Loadgen</a><ul><li><a href=#变量的使用>变量的使用</a></li><li><a href=#请求的定义>请求的定义</a></li><li><a href=#命令行参数>命令行参数</a></li><li><a href=#执行压测>执行压测</a></li><li><a href=#模拟批量写入>模拟批量写入</a></li><li><a href=#限制客户端压力>限制客户端压力</a></li><li><a href=#限制请求的总条数>限制请求的总条数</a></li><li><a href=#使用自增-id-来确保文档的顺序性>使用自增 ID 来确保文档的顺序性</a></li></ul></li></ul></li></ul></nav></aside></header><article class=markdown><h1 id=性能测试>性能测试
+<a class=anchor href=#%e6%80%a7%e8%83%bd%e6%b5%8b%e8%af%95>#</a></h1><p>推荐使用 Elasticsearch 专属压测工具 <code>Loadgen</code> 来对网关进行性能压测。</p><p>Loadgen 的特点：</p><ul><li>性能强劲</li><li>轻量级无依赖</li><li>支持模板化参数随机</li><li>支持高并发</li><li>支持压测端均衡流量控制</li></ul><blockquote><p>下载地址：
+<a href=http://release.infinilabs.com/loadgen/>http://release.infinilabs.com/loadgen/</a></p></blockquote><h2 id=loadgen>Loadgen
+<a class=anchor href=#loadgen>#</a></h2><p>Loadgen 使用非常简单，下载解压之后会得到两个文件，一个可执行程序和一个配置文件 <code>loadgen.yml</code>，配置文件样例如下：</p><pre><code>variables:
+  - name: ip
+    type: file
+    path: test/ip.txt
+  - name: user
+    type: file
+    path: test/user.txt
+  - name: id
+    type: sequence
+  - name: uuid
+    type: uuid
+  - name: now_local
+    type: now_local
+  - name: now_utc
+    type: now_utc
+  - name: now_unix
+    type: now_unix
+requests:
+  - request:
+      has_variable: true
+      method: GET
+      basic_auth:
+        username: elastic
+        password: pass
+      url: http://localhost:8000/medcl/_search
+      body: '{  &quot;query&quot;: {&quot;match&quot;: {    &quot;name&quot;: &quot;$[[user]]&quot;  }}}'
+</code></pre><h3 id=变量的使用>变量的使用
+<a class=anchor href=#%e5%8f%98%e9%87%8f%e7%9a%84%e4%bd%bf%e7%94%a8>#</a></h3><p>上面的配置中，<code>variables</code> 用来定义变量参数，根据 <code>name</code> 来设置变量标识，在构造请求的使用 <code>$[[变量名]]</code> 即可访问该变量的值，变量目前支持的类型有：</p><table><thead><tr><th>类型</th><th>说明</th></tr></thead><tbody><tr><td>file</td><td>文件型外部变量参数</td></tr><tr><td>sequence</td><td>自增数字类型的变量</td></tr><tr><td>uuid</td><td>UUID 字符类型的变量</td></tr><tr><td>now_local</td><td>当前时间、本地时区</td></tr><tr><td>now_utc</td><td>当前时间、UTC 时区</td></tr><tr><td>now_unix</td><td>当前时间、Unix 时间戳</td></tr></tbody></table><p><code>file</code> 类型变量参数加载自外部文本文件，每行一个变量参数，访问该变量时每次随机取其中一个，变量里面的定义格式举例如下：</p><pre><code>➜  loadgen git:(master) ✗ cat test/user.txt 
+medcl
+elastic
+</code></pre><h3 id=请求的定义>请求的定义
+<a class=anchor href=#%e8%af%b7%e6%b1%82%e7%9a%84%e5%ae%9a%e4%b9%89>#</a></h3><p>配置节点 <code>requests</code> 用来设置 Loadgen 将依次执行的请求，支持固定参数的请求，通过设置 <code>has_variable</code> 为 <code>true</code> 也可支持模板变量参数化构造请求，以下是一个普通的查询请求：</p><pre><code>requests:
+  - request:
+      has_variable: true
+      method: GET
+      basic_auth:
+        username: elastic
+        password: pass
+      url: http://localhost:8000/medcl/_search?q=name:$[[user]]
+</code></pre><p>上面的查询对 <code>medcl</code> 索引进行了查询，并对 <code>name</code> 字段执行一个查询，每次请求的值来自随机变量 <code>user</code>。</p><h3 id=命令行参数>命令行参数
+<a class=anchor href=#%e5%91%bd%e4%bb%a4%e8%a1%8c%e5%8f%82%e6%95%b0>#</a></h3><p>Loadgen 会循环执行配置文件里面定义的请求，默认 Loadgen 只会运行 <code>5s</code> 就自动退出了，如果希望延长运行时间或者加大并发可以通过启动的时候设置参数来控制，通过查看帮助命令如下：</p><pre><code>➜  loadgen git:(master) ✗ ./bin/loadgen --help
+Usage of ./bin/loadgen:
+  -c int
+    	Number of concurrent threads (default 1)
+  -compress
+    	Compress requests with gzip
+  -config string
+    	the location of config file, default: loadgen.yml (default &quot;loadgen.yml&quot;)
+  -cpu int
+    	the number of CPUs to use (default -1)
+  -cpuprofile string
+    	write cpu profile to this file
+  -d int
+    	Duration of tests in seconds (default 5)
+  -daemon
+    	run in background as daemon
+  -debug
+    	run in debug mode, loadgen will quit with panic error
+  -l int
+    	Limit total requests (default -1)
+  -log string
+    	the log level,options:trace,debug,info,warn,error (default &quot;info&quot;)
+  -memprofile string
+    	write memory profile to this file
+  -pidfile string
+    	pidfile path (only for daemon mode)
+  -pprof string
+    	enable and setup pprof/expvar service, eg: localhost:6060 , the endpoint will be: http://localhost:6060/debug/pprof/ and http://localhost:6060/debug/vars
+  -r int
+    	Max requests per second (fixed QPS) (default -1)
+  -v	version
+</code></pre><h3 id=执行压测>执行压测
+<a class=anchor href=#%e6%89%a7%e8%a1%8c%e5%8e%8b%e6%b5%8b>#</a></h3><p>执行 Loadgen 程序即可执行压测，如下:</p><pre><code>➜  loadgen git:(master) ✗ ./bin/loadgen -d 30 -c 100 -compress
+   __   ___  _      ___  ___   __    __
+  / /  /___\/_\    /   \/ _ \ /__\/\ \ \
+ / /  //  ///_\\  / /\ / /_\//_\ /  \/ /
+/ /__/ \_//  _  \/ /_// /_\\//__/ /\  /
+\____|___/\_/ \_/___,'\____/\__/\_\ \/
+
+[LOADGEN] A http load generator and testing suit.
+[LOADGEN] 1.0.0_SNAPSHOT, 83f2cb9, Sun Jul 4 13:52:42 2021 +0800, medcl, support single item in dict files
+[07-19 16:15:00] [INF] [instance.go:24] workspace: data/loadgen/nodes/0
+[07-19 16:15:00] [INF] [loader.go:312] warmup started
+[07-19 16:15:00] [INF] [app.go:306] loadgen now started.
+[07-19 16:15:00] [INF] [loader.go:316] [GET] http://localhost:8000/medcl/_search
+[07-19 16:15:00] [INF] [loader.go:317] status: 200,&lt;nil&gt;,{&quot;took&quot;:1,&quot;timed_out&quot;:false,&quot;_shards&quot;:{&quot;total&quot;:1,&quot;successful&quot;:1,&quot;skipped&quot;:0,&quot;failed&quot;:0},&quot;hits&quot;:{&quot;total&quot;:{&quot;value&quot;:0,&quot;relation&quot;:&quot;eq&quot;},&quot;max_score&quot;:null,&quot;hits&quot;:[]}}
+[07-19 16:15:00] [INF] [loader.go:316] [GET] http://localhost:8000/medcl/_search?q=name:medcl
+[07-19 16:15:00] [INF] [loader.go:317] status: 200,&lt;nil&gt;,{&quot;took&quot;:1,&quot;timed_out&quot;:false,&quot;_shards&quot;:{&quot;total&quot;:1,&quot;successful&quot;:1,&quot;skipped&quot;:0,&quot;failed&quot;:0},&quot;hits&quot;:{&quot;total&quot;:{&quot;value&quot;:0,&quot;relation&quot;:&quot;eq&quot;},&quot;max_score&quot;:null,&quot;hits&quot;:[]}}
+[07-19 16:15:01] [INF] [loader.go:316] [POST] http://localhost:8000/_bulk
+[07-19 16:15:01] [INF] [loader.go:317] status: 200,&lt;nil&gt;,{&quot;took&quot;:120,&quot;errors&quot;:false,&quot;items&quot;:[{&quot;index&quot;:{&quot;_index&quot;:&quot;medcl-y4&quot;,&quot;_type&quot;:&quot;doc&quot;,&quot;_id&quot;:&quot;c3qj9123r0okahraiej0&quot;,&quot;_version&quot;:1,&quot;result&quot;:&quot;created&quot;,&quot;_shards&quot;:{&quot;total&quot;:2,&quot;successful&quot;:1,&quot;failed&quot;:0},&quot;_seq_no&quot;:5735852,&quot;_primary_term&quot;:3,&quot;status&quot;:201}}]}
+[07-19 16:15:01] [INF] [loader.go:325] warmup finished
+
+5253 requests in 32.756483336s, 524.61KB sent, 2.49MB received
+
+[Loadgen Client Metrics]
+Requests/sec:		175.10
+Request Traffic/sec:	17.49KB
+Total Transfer/sec:	102.34KB
+Avg Req Time:		5.711022ms
+Fastest Request:	440.448µs
+Slowest Request:	3.624302658s
+Number of Errors:	0
+Number of Invalid:	0
+Status 200:		5253
+
+[Estimated Server Metrics]
+Requests/sec:		160.37
+Transfer/sec:		93.73KB
+Avg Req Time:		623.576686ms
+</code></pre><p>Loadgen 在正式压测之前会将所有的请求执行一次来进行预热，如果出现错误会提示是否继续，预热的请求结果也会输出到终端，执行完成之后会输出执行的摘要信息。</p><blockquote><p>因为 Loadgen 最后的结果是所有请求全部执行完成之后的累计统计，可能存在不准的问题，建议通过打开 Kibana 的监控仪表板来实时查看 Elasticsearch 的各项运行指标。</p></blockquote><h3 id=模拟批量写入>模拟批量写入
+<a class=anchor href=#%e6%a8%a1%e6%8b%9f%e6%89%b9%e9%87%8f%e5%86%99%e5%85%a5>#</a></h3><p>使用 Loadgen 来模拟 bulk 批量写入也非常简单，在请求体里面配置一条索引操作，然后使用 <code>body_repeat_times</code> 参数来随机参数化复制若干条请求即可完成一批请求的准备，如下：</p><pre><code>  - request:
+      method: POST
+      has_variable: true
+      basic_auth:
+        username: test
+        password: testtest
+      url: http://localhost:8000/_bulk
+      body_repeat_times: 1000
+      body: &quot;{ \&quot;index\&quot; : { \&quot;_index\&quot; : \&quot;medcl-y4\&quot;,\&quot;_type\&quot;:\&quot;doc\&quot;, \&quot;_id\&quot; : \&quot;$[[uuid]]\&quot; } }\n{ \&quot;id\&quot; : \&quot;$[[id]]\&quot;,\&quot;field1\&quot; : \&quot;$[[user]]\&quot;,\&quot;ip\&quot; : \&quot;$[[ip]]\&quot;,\&quot;now_local\&quot; : \&quot;$[[now_local]]\&quot;,\&quot;now_unix\&quot; : \&quot;$[[now_unix]]\&quot; }\n&quot;
+</code></pre><h3 id=限制客户端压力>限制客户端压力
+<a class=anchor href=#%e9%99%90%e5%88%b6%e5%ae%a2%e6%88%b7%e7%ab%af%e5%8e%8b%e5%8a%9b>#</a></h3><p>使用 Loadgen 并设置命令行参数 <code>-r</code> 可以限制客户端发送的每秒请求数，从而评估固定压力下 Elasticsearch 的响应时间和负载情况，如下：</p><pre><code>➜  loadgen git:(master) ✗ ./bin/loadgen -d 30 -c 100 -r 100
+</code></pre><blockquote><p>注意，在大量并发下，此客户端吞吐限制可能不完全准确。</p></blockquote><h3 id=限制请求的总条数>限制请求的总条数
+<a class=anchor href=#%e9%99%90%e5%88%b6%e8%af%b7%e6%b1%82%e7%9a%84%e6%80%bb%e6%9d%a1%e6%95%b0>#</a></h3><p>通过设置参数 <code>-l</code> 可以控制客户端发送的请求总数，从而制造固定的文档，修改配置如下：</p><pre><code>requests:
+  - request:
+      method: POST
+      has_variable: true
+      basic_auth:
+        username: test
+        password: testtest
+      url: http://localhost:8000/medcl-test/doc2/_bulk
+      body_repeat_times: 1
+      body: &quot;{ \&quot;index\&quot; : { \&quot;_index\&quot; : \&quot;medcl-test\&quot;, \&quot;_id\&quot; : \&quot;$[[uuid]]\&quot; } }\n{ \&quot;id\&quot; : \&quot;$[[id]]\&quot;,\&quot;field1\&quot; : \&quot;$[[user]]\&quot;,\&quot;ip\&quot; : \&quot;$[[ip]]\&quot; }\n&quot;
+</code></pre><p>每次请求只有一个文档，然后执行 loadgen</p><pre><code>./bin/loadgen -config loadgen-gw.yml -d 600 -c 100 -l 50000
+</code></pre><p>执行完成之后，Elasticsearch 的索引 <code>medcl-test</code> 将增加 <code>50000</code> 条记录。</p><h3 id=使用自增-id-来确保文档的顺序性>使用自增 ID 来确保文档的顺序性
+<a class=anchor href=#%e4%bd%bf%e7%94%a8%e8%87%aa%e5%a2%9e-id-%e6%9d%a5%e7%a1%ae%e4%bf%9d%e6%96%87%e6%a1%a3%e7%9a%84%e9%a1%ba%e5%ba%8f%e6%80%a7>#</a></h3><p>如果希望生成的文档编号自增有规律，方便进行对比，可以使用 <code>sequence</code> 类型的自增 ID 来作为主键，内容也不要用随机数，如下：</p><pre><code>requests:
+  - request:
+      method: POST
+      has_variable: true
+      basic_auth:
+        username: test
+        password: testtest
+      url: http://localhost:8000/medcl-test/doc2/_bulk
+      body_repeat_times: 1
+      body: &quot;{ \&quot;index\&quot; : { \&quot;_index\&quot; : \&quot;medcl-test\&quot;, \&quot;_id\&quot; : \&quot;$[[id]]\&quot; } }\n{ \&quot;id\&quot; : \&quot;$[[id]]\&quot; }\n&quot;
+</code></pre></article><footer class=book-footer><div class="flex flex-wrap justify-between"><div class=book-languages tabindex=0 aria-haspopup=true><ul><li class="flex align-center"><img src=/svg/translate.svg class=book-icon alt=Languages>
+Chinese</li></ul><ul class=book-languages-list><li class=active><a href=/zh/ class="flex align-center"><img src=/svg/translate.svg class=book-icon alt=Languages>
+Chinese</a></li><li><a href=/docs/getting-started/benchmark/ class="flex align-center"><img src=/svg/translate.svg class=book-icon alt=Languages>
+English</a></li></ul></div><div class="flex align-center footer">©INFINI.LTD, All Rights Reserved.</div><script>(function(h,o,t,j,a,r){h.hj=h.hj||function(){(h.hj.q=h.hj.q||[]).push(arguments)};h._hjSettings={hjid:2567416,hjsv:6};a=o.getElementsByTagName('head')[0];r=o.createElement('script');r.async=1;r.src=t+h._hjSettings.hjid+j+h._hjSettings.hjsv;a.appendChild(r);})(window,document,'https://static.hotjar.com/c/hotjar-','.js?sv=');</script><script async src="https://www.googletagmanager.com/gtag/js?id=G-VV6PGDHH84"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}
+gtag('js',new Date());gtag('config','G-VV6PGDHH84');</script><script type=text/javascript>var _smartsupp=_smartsupp||{};_smartsupp.key='691ff544d18a237005a011a7290b839d8fe811a4';window.smartsupp||(function(d){var s,c,o=smartsupp=function(){o._.push(arguments)};o._=[];s=d.getElementsByTagName('script')[0];c=d.createElement('script');c.type='text/javascript';c.charset='utf-8';c.async=true;c.src='https://www.smartsuppchat.com/loader.js?';s.parentNode.insertBefore(c,s);})(document);</script></div></footer><label for=menu-control class="hidden book-menu-overlay"></label></div><aside class=book-toc><nav id=TableOfContents><ul><li><a href=#性能测试>性能测试</a><ul><li><a href=#loadgen>Loadgen</a><ul><li><a href=#变量的使用>变量的使用</a></li><li><a href=#请求的定义>请求的定义</a></li><li><a href=#命令行参数>命令行参数</a></li><li><a href=#执行压测>执行压测</a></li><li><a href=#模拟批量写入>模拟批量写入</a></li><li><a href=#限制客户端压力>限制客户端压力</a></li><li><a href=#限制请求的总条数>限制请求的总条数</a></li><li><a href=#使用自增-id-来确保文档的顺序性>使用自增 ID 来确保文档的顺序性</a></li></ul></li></ul></li></ul></nav></aside></main></body></html>
